@@ -2,6 +2,7 @@
 #define VECTOR_UTILS
 
 #include <vector>
+namespace CNDA {
 namespace vector_utils {
     template <typename T>
     T product(std::vector<T> vec) {
@@ -32,6 +33,7 @@ inline bool vector_utils::compatible_shape(std::vector<int> a, std::vector<int> 
     }
 
     return true;
+}
 }
 
 #endif

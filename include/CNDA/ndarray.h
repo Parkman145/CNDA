@@ -7,6 +7,7 @@
 #include <stdexcept>
 #include <vector>
 
+namespace CNDA {
 template <typename T>
 class Ndarray
 {
@@ -351,6 +352,7 @@ Ndarray<T> Ndarray<T>::matmul(const Ndarray<T>& mat1, const Ndarray<T>& mat2) {
 
   return result;
 
+}
 }
 
 // template<typename T>
