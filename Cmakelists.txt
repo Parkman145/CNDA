@@ -1,0 +1,9 @@
+cmake_minimum_required(VERSION 3.31.5)
+
+project(CNDA LANGUAGES CXX)
+
+add_library(CNDA INTERFACE)
+
+target_include_directories(CNDA INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+target_compile_features(CNDA INTERFACE cxx_std_23)
