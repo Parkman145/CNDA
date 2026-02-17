@@ -14,19 +14,19 @@
 namespace CNDA {
 template <typename T>
 Ndarray<T> read_np(const std::string& path) {
-    std::ifstream file(path);
+    std::ifstream file(path, std::ios::binary);
 
     bool found = false;
-    while (!found){
-        if (file.peek() == '(') found = true;
-        file.seekg(1, std::ios_base::cur);
+    char chr;
+    while (file.get(chr)){
+        if (chr == '(') break;
     }
     
     std::vector<int> shape;
     bool done = false;
 
     while (!done){
-        if (file.peek() == ')') {
+        if (file.peek() == ')') {;
             break;
         }
         
@@ -39,19 +39,17 @@ Ndarray<T> read_np(const std::string& path) {
         }
 
         shape.push_back(std::stoi(field));
-        file.seekg(1, std::ios_base::cur);
     }
 
     found = false;
-    while (!found){
-        if (file.peek() == '\n') found = true;
-        file.seekg(1, std::ios_base::cur);
+    while (file.get(chr)){
+        if (chr == '\n') break;
     }
 
     auto begin = file.tellg();
     file.seekg(0, std::ios_base::end);
     auto end = file.tellg();
-    int size = end - begin;
+    auto size = end - begin;
     file.seekg(begin);
     int count = size/sizeof(T);
 
