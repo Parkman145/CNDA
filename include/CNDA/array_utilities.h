@@ -11,6 +11,7 @@
 
 #include "ndarray.h"
 
+namespace CNDA {
 template <typename T>
 Ndarray<T> read_np(const std::string& path) {
     std::ifstream file(path);
@@ -61,6 +62,7 @@ Ndarray<T> read_np(const std::string& path) {
     Ndarray<T> result{shape, data};
 
     return result;
+}
 }
 
 
