@@ -20,6 +20,7 @@ private: // Private
 public:
   Ndarray(const std::vector<int> &shape);
   Ndarray(const std::vector<int> &shape, const std::vector<T> &data);
+  Ndarray(const std::vector<int> &shape, T val);
 
   void write_data(const std::vector<T>& new_data);
 
@@ -120,6 +121,17 @@ Ndarray<T>::Ndarray(const std::vector<int> &shape, const std::vector<T> &data)
   }
 
   this->data = data;
+  this->shape = shape;
+}
+
+template <typename T>
+Ndarray<T>::Ndarray(const std::vector<int> &shape, T val)
+{
+  int size = vector_utils::product(shape);
+
+
+
+  data.resize(size, val=val);
   this->shape = shape;
 }
 
