@@ -37,6 +37,10 @@ public:
   const T &operator[](const int location) const;
 
   template<typename Op>
+  static Ndarray<T> element_wise(const Ndarray<T> &lhs, const Ndarray<T> &rhs,  Op op); 
+  template<typename Op>
+  Ndarray<T> element_wise(const Ndarray<T> &other, Op op) const;
+  template<typename Op>
   Ndarray<T> element_wise(Op op) const;
   template<typename Op>
   Ndarray<T> element_wise(T val, Op op) const;
@@ -228,6 +232,34 @@ template <typename T>
 const T &Ndarray<T>::operator[](const int location) const
 {
   return const_cast<Ndarray<T>&>(*this).operator[](location);
+}
+
+template <typename T>
+template <typename Op>
+Ndarray<T> Ndarray<T>::element_wise(const Ndarray<T> &lhs, const Ndarray<T> &rhs, Op op) {
+  if (lhs.shape != rhs.shape)
+  {
+    throw IncompatibleShape();
+  }
+
+  Ndarray<T> result(lhs.shape);
+  if (lhs.is_contiguous() && rhs.is_contiguous()){
+    for (int i = 0; i < lhs.data.size(); i++)
+    {
+      result.data[i] = op(lhs.data[i], rhs.data[i]);
+    }
+  } else {
+    // TODO
+  }
+
+  return result;
+
+}
+
+template <typename T>
+template <typename Op>
+Ndarray<T> Ndarray<T>::element_wise(const Ndarray<T> &other, Op op) const {
+  return element_wise(*this, other);
 }
 
 template <typename T>
