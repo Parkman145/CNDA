@@ -14,8 +14,11 @@ class Ndarray
 private: // Private
   std::vector<T> data;
   std::vector<int> shape;
+  std::vector<int> strides;
+  int offset;
 
   int compute_index(const std::vector<int> &location) const;
+  void compute_strides();
 
 public:
   Ndarray(const std::vector<int> &shape);
@@ -149,6 +152,16 @@ int Ndarray<T>::compute_index(const std::vector<int> &location) const
   }
 
   return pos;
+}
+
+template <typename T>
+void Ndarray<T>::compute_strides(){
+  strides.resize(shape.size());
+  int prod = 1;
+  for(int i = shape.size()-1; i >=0; i--) {
+      strides[i] = prod;
+      prod *= shape[i];
+  }
 }
 
 template <typename T>
