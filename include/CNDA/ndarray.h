@@ -36,9 +36,9 @@ public:
   const T &operator[](const int location) const;
 
   template<typename Op>
-  Ndarray<T> element_wise(Op op);
+  Ndarray<T> element_wise(Op op) const;
   template<typename Op>
-  Ndarray<T> element_wise(T val, Op op);
+  Ndarray<T> element_wise(T val, Op op) const;
 
   Ndarray<T> operator+(const Ndarray<T> &other) const;
   Ndarray<T> operator-(const Ndarray<T> &other) const;
