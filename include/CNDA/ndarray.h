@@ -111,6 +111,7 @@ Ndarray<T>::Ndarray(const std::vector<int> &shape)
 
   data.resize(size);
   this->shape = shape;
+  compute_strides();
 }
 
 template <typename T>
@@ -125,6 +126,7 @@ Ndarray<T>::Ndarray(const std::vector<int> &shape, const std::vector<T> &data)
 
   this->data = data;
   this->shape = shape;
+  compute_strides();
 }
 
 template <typename T>
