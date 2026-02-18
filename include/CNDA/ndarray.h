@@ -35,7 +35,8 @@ public:
   const T &operator[](const std::vector<int> &location) const;
   const T &operator[](const int location) const;
 
-
+  template<typename Op>
+  Ndarray<T> element_wise(Op op);
 
   Ndarray<T> operator+(const Ndarray<T> &other) const;
   Ndarray<T> operator-(const Ndarray<T> &other) const;
@@ -230,6 +231,27 @@ const T &Ndarray<T>::operator[](const int location) const
 {
   return const_cast<Ndarray<T>&>(*this).operator[](location);
 }
+
+template <typename T>
+template <typename Op>
+Ndarray<T> Ndarray<T>::element_wise(Op op) {
+  Ndarray<T> result(shape);
+  
+  if (is_contiguous()) {
+    int size = this->size();
+    for (int i = 0; i < size; i++)
+    {
+      result.data[i] = op(data[i]);
+    }
+
+  } else {
+    // TODO
+  }
+
+  return result;
+  
+}
+
 
 template <typename T>
 Ndarray<T> Ndarray<T>::operator+(const Ndarray<T> &other) const
