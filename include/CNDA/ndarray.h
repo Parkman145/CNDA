@@ -25,9 +25,9 @@ public:
   Ndarray(const std::vector<int> &shape, const std::vector<T> &data);
   Ndarray(const std::vector<int> &shape, T val);
 
-  int size() {return vector_utils::product(shape);}
+  int size() const {return vector_utils::product(shape);} 
   void write_data(const std::vector<T>& new_data);
-  bool is_contiguous();
+  bool is_contiguous() const ;
 
   T &operator[](const std::vector<int> &location);
   T &operator[](const int location);
@@ -172,8 +172,7 @@ void Ndarray<T>::compute_strides(){
 }
 
 template <typename T>
-bool Ndarray<T>::is_contiguous(){
-  strides.resize(shape.size());
+bool Ndarray<T>::is_contiguous() const {
   int expected = 1;
   for(int i = shape.size()-1; i >=0; i--) {
       if (expected != strides[i]) return false;
@@ -236,7 +235,7 @@ const T &Ndarray<T>::operator[](const int location) const
 
 template <typename T>
 template <typename Op>
-Ndarray<T> Ndarray<T>::element_wise(Op op) {
+Ndarray<T> Ndarray<T>::element_wise(Op op) const {
   Ndarray<T> result(shape);
   
   if (is_contiguous()) {
@@ -257,7 +256,7 @@ Ndarray<T> Ndarray<T>::element_wise(Op op) {
 
 template <typename T>
 template <typename Op>
-Ndarray<T> Ndarray<T>::element_wise(T val, Op op) {
+Ndarray<T> Ndarray<T>::element_wise(T val, Op op) const {
   auto func = [val, op](T other) { return op(val, other); };
   
   return element_wise(func);
