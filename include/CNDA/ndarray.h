@@ -27,6 +27,7 @@ public:
 
   int size() {return vector_utils::product(shape);}
   void write_data(const std::vector<T>& new_data);
+  bool is_contiguous();
 
   T &operator[](const std::vector<int> &location);
   T &operator[](const int location);
@@ -165,6 +166,17 @@ void Ndarray<T>::compute_strides(){
       strides[i] = prod;
       prod *= shape[i];
   }
+}
+
+template <typename T>
+bool Ndarray<T>::is_contiguous(){
+  strides.resize(shape.size());
+  int expected = 1;
+  for(int i = shape.size()-1; i >=0; i--) {
+      if (expected != strides[i]) return false;
+      expected *= shape[i];
+  }
+  return true;
 }
 
 template <typename T>
