@@ -37,6 +37,8 @@ public:
 
   template<typename Op>
   Ndarray<T> element_wise(Op op);
+  template<typename Op>
+  Ndarray<T> element_wise(T val, Op op);
 
   Ndarray<T> operator+(const Ndarray<T> &other) const;
   Ndarray<T> operator-(const Ndarray<T> &other) const;
@@ -249,6 +251,16 @@ Ndarray<T> Ndarray<T>::element_wise(Op op) {
   }
 
   return result;
+  
+}
+
+
+template <typename T>
+template <typename Op>
+Ndarray<T> Ndarray<T>::element_wise(T val, Op op) {
+  auto func = [val, op](T other) { return op(val, other); };
+  
+  return element_wise(func);
   
 }
 
