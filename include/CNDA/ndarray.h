@@ -296,73 +296,25 @@ Ndarray<T> Ndarray<T>::element_wise(T val, Op op) const {
 template <typename T>
 Ndarray<T> Ndarray<T>::operator+(const Ndarray<T> &other) const
 {
-  if (shape != other.shape)
-  {
-    throw IncompatibleShape();
-  }
-
-  Ndarray<T> result(shape);
-
-  for (int i = 0; i < data.size(); i++)
-  {
-    result.data[i] = data[i] + other.data[i];
-  }
-
-  return result;
+  return element_wise(*this, other, std::plus<T>());
 }
 
 template <typename T>
 Ndarray<T> Ndarray<T>::operator-(const Ndarray<T> &other) const
 {
-  if (shape != other.shape)
-  {
-    throw IncompatibleShape();
-  }
-
-  Ndarray<T> result(shape);
-
-  for (int i = 0; i < data.size(); i++)
-  {
-    result.data[i] = data[i] - other.data[i];
-  }
-
-  return result;
+  return element_wise(*this, other, std::minus<T>());
 }
 
 template <typename T>
 Ndarray<T> Ndarray<T>::operator*(const Ndarray<T> &other) const
 {
-  if (shape != other.shape)
-  {
-    throw IncompatibleShape();
-  }
-
-  Ndarray<T> result(shape);
-
-  for (int i = 0; i < data.size(); i++)
-  {
-    result.data[i] = data[i] * other.data[i];
-  }
-
-  return result;
+  return element_wise(*this, other, std::multiplies<T>());
 }
 
 template <typename T>
 Ndarray<T> Ndarray<T>::operator/(const Ndarray<T> &other) const
 {
-  if (shape != other.shape)
-  {
-    throw IncompatibleShape();
-  }
-
-  Ndarray<T> result(shape);
-
-  for (int i = 0; i < data.size(); i++)
-  {
-    result.data[i] = data[i] / other.data[i];
-  }
-
-  return result;
+  return element_wise(*this, other, std::divides<T>());
 }
 
 
