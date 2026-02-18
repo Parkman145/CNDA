@@ -25,6 +25,7 @@ public:
   Ndarray(const std::vector<int> &shape, const std::vector<T> &data);
   Ndarray(const std::vector<int> &shape, T val);
 
+  int size() {return vector_utils::product(shape);}
   void write_data(const std::vector<T>& new_data);
 
   T &operator[](const std::vector<int> &location);
