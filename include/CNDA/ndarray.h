@@ -257,7 +257,7 @@ Ndarray<T> Ndarray<T>::element_wise(Op op) const {
 template <typename T>
 template <typename Op>
 Ndarray<T> Ndarray<T>::element_wise(T val, Op op) const {
-  auto func = [val, op](T other) { return op(val, other); };
+  auto func = [val, op](T other) { return op(other, val); };
   
   return element_wise(func);
   
