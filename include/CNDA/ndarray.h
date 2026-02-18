@@ -3,6 +3,7 @@
 
 #include "vectorutils.h"
 #include <cstddef>
+#include <functional>
 #include <iostream>
 #include <stdexcept>
 #include <vector>
@@ -45,14 +46,10 @@ public:
   Ndarray<T> operator*(const Ndarray<T> &other) const;
   Ndarray<T> operator/(const Ndarray<T> &other) const;
 
-  template <typename T2>
-  Ndarray<T> operator+(const T2 &other) const;
-  template <typename T2>
-  Ndarray<T> operator-(const T2 &other) const;
-  template <typename T2>
-  Ndarray<T> operator*(const T2 &other) const;
-  template <typename T2>
-  Ndarray<T> operator/(const T2 &other) const;
+  Ndarray<T> operator+(const T &other) const;
+  Ndarray<T> operator-(const T &other) const;
+  Ndarray<T> operator*(const T &other) const;
+  Ndarray<T> operator/(const T &other) const;
 
   static Ndarray<T> matmul(const Ndarray<T>& mat1, const Ndarray<T>& mat2);
 
@@ -338,59 +335,27 @@ Ndarray<T> Ndarray<T>::operator/(const Ndarray<T> &other) const
 
 
 template <typename T>
-template <typename T2>
-Ndarray<T> Ndarray<T>::operator+(const T2 &other) const
+Ndarray<T> Ndarray<T>::operator+(const T &other) const
 {
-  Ndarray<T> result(shape);
-
-  for (int i = 0; i < data.size(); i++)
-  {
-    result.data[i] = data[i] + other;
-  }
-
-  return result;
+  return element_wise(other, std::plus<T>());
 }
 
 template <typename T>
-template <typename T2>
-Ndarray<T> Ndarray<T>::operator-(const T2 &other) const
+Ndarray<T> Ndarray<T>::operator-(const T &other) const
 {
-  Ndarray<T> result(shape);
-
-  for (int i = 0; i < data.size(); i++)
-  {
-    result.data[i] = data[i] - other;
-  }
-
-  return result;
+  return element_wise(other, std::minus<T>());
 }
 
 template <typename T>
-template <typename T2>
-Ndarray<T> Ndarray<T>::operator*(const T2 &other) const
+Ndarray<T> Ndarray<T>::operator*(const T &other) const
 {
-  Ndarray<T> result(shape);
-
-  for (int i = 0; i < data.size(); i++)
-  {
-    result.data[i] = data[i] * other;
-  }
-
-  return result;
+  return element_wise(other, std::multiplies<T>());
 }
 
 template <typename T>
-template <typename T2>
-Ndarray<T> Ndarray<T>::operator/(const T2 &other) const
+Ndarray<T> Ndarray<T>::operator/(const T &other) const
 {
-  Ndarray<T> result(shape);
-
-  for (int i = 0; i < data.size(); i++)
-  {
-    result.data[i] = data[i] / other;
-  }
-
-  return result;
+  return element_wise(other, std::divides<T>());
 }
 
 template <typename T>
