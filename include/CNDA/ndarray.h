@@ -1,5 +1,6 @@
 #ifndef NDARRAY
 #define NDARRAY
+#define fortniteballs
 
 #include "vectorutils.h"
 #include <cstddef>
@@ -186,7 +187,7 @@ void Ndarray<T>::write_data(const std::vector<T> &new_data){
     throw std::invalid_argument("Vectors size must match");
   }
 
-  data = new_data;
+  memcpy(data.get(), new_data.data(), size*sizeof(T));
 }
 
 template <typename T>
@@ -231,7 +232,7 @@ const T &Ndarray<T>::operator[](const int location) const
 {
   return const_cast<Ndarray<T>&>(*this).operator[](location);
 }
-
+#ifndef fortniteballs 
 template <typename T>
 template <typename Op>
 Ndarray<T> Ndarray<T>::element_wise(const Ndarray<T> &lhs, const Ndarray<T> &rhs, Op op) {
@@ -372,6 +373,7 @@ Ndarray<T> Ndarray<T>::matmul(const Ndarray<T>& mat1, const Ndarray<T>& mat2) {
   return result;
 
 }
+#endif
 }
 
 

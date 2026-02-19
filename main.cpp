@@ -8,10 +8,12 @@
 #include <math.h>
 
 int main(){
-    CNDA::Ndarray<double> a{{2, 2}, {1, 2, 3, 4}};
-    CNDA::Ndarray<double> b{{2, 2}, {4, 6, 8, 10}};
-    std::cout << CNDA::Ndarray<double>::element_wise(a, b, std::minus<double>());
-
+    CNDA::Ndarray<double> a{{2, 2}};
+    std::cout << a;
+    a.write_data({1, 2, 3, 4, 5});
+    std::cout << a;
+    a.write_data({6, 7, 8, 9});
+    std::cout << a;
     return 0;
 
 }
