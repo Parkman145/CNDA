@@ -5,15 +5,17 @@
 #include <cstddef>
 #include <functional>
 #include <iostream>
+#include <memory>
 #include <stdexcept>
 #include <vector>
+#include <cstring>
 
 namespace CNDA {
 template <typename T>
 class Ndarray
 {
 private: // Private
-  std::vector<T> data;
+  std::shared_ptr<T[]> data;
   std::vector<int> shape;
   std::vector<int> strides;
   int offset;
@@ -114,20 +116,22 @@ template <typename T>
 Ndarray<T>::Ndarray(const std::vector<int> &shape)
   : shape{shape}, size{vector_utils::product(shape)}
 {
-  data.resize(size);
+  data = std::shared_ptr<T[]>(new T[size](), std::default_delete<T[]>());
   compute_strides();
 }
 
 template <typename T>
-Ndarray<T>::Ndarray(const std::vector<int> &shape, const std::vector<T> &data)
+Ndarray<T>::Ndarray(const std::vector<int> &shape, const std::vector<T> &input_data)
   : shape{shape}, size{vector_utils::product(shape)}
 {
-  if (data.size() != vector_utils::product(shape))
+  if (input_data.size() != size)
   {
     throw InvalidShapeException();
   }
 
-  this->data = data;
+  data = std::shared_ptr<T[]>(new T[size], std::default_delete<T[]>());
+
+  std::memcpy(data.get(), input_data.data(), input_data.size() * sizeof(T));
   compute_strides();
 }
 
@@ -135,9 +139,8 @@ template <typename T>
 Ndarray<T>::Ndarray(const std::vector<int> &shape, T val)
   : shape{shape}, size{vector_utils::product(shape)}
 {
-  data.resize(size, val=val);
-  this->shape = shape;
-
+  data = std::shared_ptr<T[]>(new T[size](), std::default_delete<T[]>());
+  std::fill(data.get(), data.get() + size, val);
   compute_strides();
 }
 
