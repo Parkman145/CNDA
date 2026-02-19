@@ -68,7 +68,7 @@ public:
       checkpoints[i] = mult;
     }
 
-    for (int i = 0; i < array.data.size(); i++) {
+    for (int i = 0; i < array.size; i++) {
       for (auto checkpoint : checkpoints) {
         if (i % checkpoint == 0) {
           os << "[";
@@ -179,7 +179,7 @@ bool Ndarray<T>::is_contiguous() const {
 
 template <typename T>
 void Ndarray<T>::write_data(const std::vector<T> &new_data){
-  if (data.size() != new_data.size()) {
+  if (size != new_data.size()) {
     throw std::invalid_argument("Vectors size must match");
   }
 
@@ -209,7 +209,7 @@ T &Ndarray<T>::operator[](const std::vector<int> &location)
 template <typename T>
 T &Ndarray<T>::operator[](const int location)
 {
-  if (location >= data.size())
+  if (location >= size)
   {
     throw std::out_of_range("Location out of data buffer range");
   }
@@ -239,7 +239,7 @@ Ndarray<T> Ndarray<T>::element_wise(const Ndarray<T> &lhs, const Ndarray<T> &rhs
 
   Ndarray<T> result(lhs.shape);
   if (lhs.is_contiguous() && rhs.is_contiguous()){
-    for (int i = 0; i < lhs.data.size(); i++)
+    for (int i = 0; i < lhs.size; i++)
     {
       result.data[i] = op(lhs.data[i], rhs.data[i]);
     }
@@ -263,7 +263,6 @@ Ndarray<T> Ndarray<T>::element_wise(Op op) const {
   Ndarray<T> result(shape);
   
   if (is_contiguous()) {
-    int size = this->size;
     for (int i = 0; i < size; i++)
     {
       result.data[i] = op(data[i]);
