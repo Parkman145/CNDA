@@ -144,6 +144,8 @@ Ndarray<T>::Ndarray(const std::vector<int> &shape, T val)
 
   data.resize(size, val=val);
   this->shape = shape;
+
+  compute_strides();
 }
 
 // No bounds checking. Use with caution.
