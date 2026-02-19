@@ -17,6 +17,7 @@ private: // Private
   std::vector<int> shape;
   std::vector<int> strides;
   int offset;
+  const int size;
 
   int compute_index(const std::vector<int> &location) const;
   void compute_strides();
@@ -26,7 +27,6 @@ public:
   Ndarray(const std::vector<int> &shape, const std::vector<T> &data);
   Ndarray(const std::vector<int> &shape, T val);
 
-  int size() const {return vector_utils::product(shape);} 
   void write_data(const std::vector<T>& new_data);
   bool is_contiguous() const ;
 
@@ -112,36 +112,29 @@ public:
 
 template <typename T>
 Ndarray<T>::Ndarray(const std::vector<int> &shape)
+  : shape{shape}, size{vector_utils::product(shape)}
 {
-  int size = vector_utils::product(shape);
-
   data.resize(size);
-  this->shape = shape;
   compute_strides();
 }
 
 template <typename T>
 Ndarray<T>::Ndarray(const std::vector<int> &shape, const std::vector<T> &data)
+  : shape{shape}, size{vector_utils::product(shape)}
 {
-  int size = vector_utils::product(shape);
-
   if (data.size() != vector_utils::product(shape))
   {
     throw InvalidShapeException();
   }
 
   this->data = data;
-  this->shape = shape;
   compute_strides();
 }
 
 template <typename T>
 Ndarray<T>::Ndarray(const std::vector<int> &shape, T val)
+  : shape{shape}, size{vector_utils::product(shape)}
 {
-  int size = vector_utils::product(shape);
-
-
-
   data.resize(size, val=val);
   this->shape = shape;
 
@@ -270,7 +263,7 @@ Ndarray<T> Ndarray<T>::element_wise(Op op) const {
   Ndarray<T> result(shape);
   
   if (is_contiguous()) {
-    int size = this->size();
+    int size = this->size;
     for (int i = 0; i < size; i++)
     {
       result.data[i] = op(data[i]);
