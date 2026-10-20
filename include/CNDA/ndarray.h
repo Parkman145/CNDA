@@ -1,6 +1,5 @@
 #ifndef NDARRAY
 #define NDARRAY
-#define fortniteballs
 
 #include "vectorutils.h"
 #include <cstddef>
@@ -232,7 +231,6 @@ const T &Ndarray<T>::operator[](const int location) const
 {
   return const_cast<Ndarray<T>&>(*this).operator[](location);
 }
-#ifndef fortniteballs 
 template <typename T>
 template <typename Op>
 Ndarray<T> Ndarray<T>::element_wise(const Ndarray<T> &lhs, const Ndarray<T> &rhs, Op op) {
@@ -375,6 +373,3 @@ Ndarray<T> Ndarray<T>::matmul(const Ndarray<T>& mat1, const Ndarray<T>& mat2) {
 }
 #endif
 }
-
-
-#endif
