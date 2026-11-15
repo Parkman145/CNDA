@@ -371,5 +371,5 @@ Ndarray<T> Ndarray<T>::matmul(const Ndarray<T>& mat1, const Ndarray<T>& mat2) {
   return result;
 
 }
-#endif
 }
+#endif
